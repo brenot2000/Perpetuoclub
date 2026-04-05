@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Award, TrendingUp, Users } from 'lucide-react';
+import { Award, TrendingUp, Users, UserCircle2 } from 'lucide-react';
 
 const stats = [
   { icon: Users, value: '50.000+', label: 'Alunos Formados' },
@@ -8,6 +9,8 @@ const stats = [
 ];
 
 export function ExpertStory() {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-transparent via-brand-card/30 to-transparent">
       <div className="max-w-5xl mx-auto">
@@ -32,27 +35,30 @@ export function ExpertStory() {
             transition={{ duration: 0.7 }}
             className="flex justify-center"
           >
-            <div className="relative">
+            <div className="relative min-h-[360px] w-72 sm:w-80 flex items-center justify-center">
+              {/* Glow background */}
               <div className="absolute inset-0 rounded-2xl bg-brand-orange/20 blur-2xl scale-110" />
-              <img
-                src="/breno.jpg"
-                alt="Breno Santo"
-                className="relative w-72 sm:w-80 rounded-2xl object-cover object-top border-2 border-brand-orange/40 shadow-[0_0_50px_rgba(255,107,0,0.3)]"
-                style={{ aspectRatio: '3/4' }}
-                onError={(e) => {
-                  const el = e.currentTarget;
-                  el.style.display = 'none';
-                  const parent = el.parentElement;
-                  if (parent) {
-                    const placeholder = document.createElement('div');
-                    placeholder.className = 'relative w-72 sm:w-80 rounded-2xl border-2 border-brand-orange/40 shadow-[0_0_50px_rgba(255,107,0,0.3)] bg-gradient-to-br from-brand-orange/20 to-brand-dark flex items-center justify-center text-brand-orange font-bold text-lg';
-                    placeholder.style.aspectRatio = '3/4';
-                    placeholder.textContent = 'Breno Santo';
-                    parent.appendChild(placeholder);
-                  }
-                }}
-              />
-              <div className="absolute -bottom-4 -right-4 bg-brand-orange text-white font-bold text-sm px-4 py-2 rounded-xl shadow-lg">
+
+              {!imgError ? (
+                <img
+                  src="/breno.jpg"
+                  alt="Breno Santo"
+                  className="relative w-full h-full rounded-2xl object-cover object-top border-2 border-brand-orange/40 shadow-[0_0_50px_rgba(255,107,0,0.3)]"
+                  style={{ aspectRatio: '3/4' }}
+                  onError={() => setImgError(true)}
+                />
+              ) : (
+                <div className="relative w-full rounded-2xl border-2 border-brand-orange/40 shadow-[0_0_50px_rgba(255,107,0,0.3)] bg-gradient-to-br from-brand-orange/20 via-brand-card to-brand-dark flex flex-col items-center justify-center gap-3 min-h-[360px]">
+                  <UserCircle2 className="w-20 h-20 text-brand-orange/60" />
+                  <p className="text-brand-orange font-bold text-lg text-center px-4">Breno Santo</p>
+                  <p className="text-gray-500 text-xs text-center px-6">
+                    Adicione a foto em<br /><code className="text-brand-orange/70">public/breno.jpg</code>
+                  </p>
+                </div>
+              )}
+
+              {/* Badge */}
+              <div className="absolute -bottom-4 -right-4 bg-brand-orange text-white font-bold text-sm px-4 py-2 rounded-xl shadow-lg z-10">
                 Breno Santo
               </div>
             </div>
